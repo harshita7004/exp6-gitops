@@ -12,17 +12,16 @@ jobs:
       - uses: actions/checkout@v3
 
       - name: Login Docker
-  run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u "${{ secrets.DOCKER_USERNAME }}" --password-stdin
+        run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u harshita61 --password-stdin
 
       - name: Build & Push Image
-        uses: docker/build-push-action@v3
-        with:
-          push: true
-          tags: harshita7004/exp6-app:${{ github.sha }}
+        run: |
+          docker build -t harshita61/exp6-app:${{ github.sha }} .
+          docker push harshita61/exp6-app:${{ github.sha }}
 
       - name: Update YAML
         run: |
-          sed -i "s|image: .*|image: harshita7004/exp6-app:${{ github.sha }}|" k8s/deployment.yaml
+          sed -i "s|image: .*|image: harshita61/exp6-app:${{ github.sha }}|" k8s/deployment.yaml
 
       - name: Push Changes
         run: |
