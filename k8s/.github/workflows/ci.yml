@@ -14,19 +14,8 @@ jobs:
       - name: Login Docker
         run: echo "${{ secrets.DOCKER_PASSWORD }}" | docker login -u harshita61 --password-stdin
 
-      - name: Build & Push Image
-        run: |
-          docker build -t harshita61/exp6-app:${{ github.sha }} .
-          docker push harshita61/exp6-app:${{ github.sha }}
+      - name: Build Image
+        run: docker build -t harshita61/exp6-app:latest .
 
-      - name: Update YAML
-        run: |
-          sed -i "s|image: .*|image: harshita61/exp6-app:${{ github.sha }}|" k8s/deployment.yaml
-
-      - name: Push Changes
-        run: |
-          git config user.name "github-actions"
-          git config user.email "actions@github.com"
-          git add k8s/deployment.yaml
-          git commit -m "update image"
-          git push
+      - name: Push Image
+        run: docker push harshita61/exp6-app:latest
