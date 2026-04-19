@@ -19,3 +19,4 @@ jobs:
 
       - name: Push Image
         run: docker push harshita61/exp6-app:latest
+        
